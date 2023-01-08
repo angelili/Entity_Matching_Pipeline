@@ -39,4 +39,4 @@ def matching():
     features = compare_cl.compute(candidate_links, df_ACM, df_DBLP)
     features_all = compare_cl.compute(candidate_links_all, df_ACM, df_DBLP)
 
-    return features,features_all
+    return df_ACM,df_DBLP,features,features_all,links_true
