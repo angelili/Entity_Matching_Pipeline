@@ -1,6 +1,8 @@
 from sklearn.model_selection import train_test_split
 import recordlinkage
 import recordlinkage as rl
+from sklearn.svm import SVC
+from sklearn.model_selection import GridSearchCV
 
 
 
@@ -43,5 +45,21 @@ def LogisticRegressionClassifier():
 
     rl.fscore(links_true, result_logreg)
 
+def svm():
+    svm = rl.SVMClassifier()
+    X_train, X_test, Y_train, Y_test = split_dataset_classification()
+    golden_pairs = features
+    golden_matches_index = golden_pairs.index.intersection(links_true)
+
+    svm.fit(X_train, Y_train)
+    result_svm = svm.predict(features_all)
+
+    rl.confusion_matrix(links_true, result_svm, len(features_all))
+
+    rl.fscore(links_true, result_svm)
 
 
+# Since SVM have better results
+
+def hyperparametertuning():
+    #To-do
