@@ -21,7 +21,6 @@ os.chdir("Dataset")
 
 df_DBLP = pd.read_csv('ACM.csv', header=0, encoding="ISO-8859-1")
 df_ACM = pd.read_csv('DBLP2.csv', header=0, encoding="ISO-8859-1")
-df_perfect_Match = pd.read_csv('DBLP-ACM_perfectMapping.csv', header=0, encoding="ISO-8859-1")
 
 tokenizer = ToktokTokenizer()
 nltk.download('stopwords')
@@ -73,9 +72,18 @@ def evaluating_dataset():
     print("Unique DBLP ID's", unique_dblp_year.size, unique_dblp_year)
 
     sns.countplot(df_ACM['venue'])
+    plt.show()
+
     sns.countplot(df_ACM['year'])
+    plt.show()
+
+
     sns.countplot(df_DBLP['venue'])
+    plt.show()
+
     sns.countplot(df_DBLP['year'])
+    plt.show()
+
 
     # Filter data
 
@@ -84,19 +92,22 @@ def evaluating_dataset():
     # Boxplot
 
     df_ACM[['year']].boxplot()
+    plt.show()
 
     # Boxplot
 
     df_DBLP[['year']].boxplot()
+    plt.show()
 
     # Correlation ACM and DBLP
 
     df_ACM.corr()
 
     sns.pairplot(df_ACM)
-    plt.show(sns)
+    plt.show()
 
     sns.pairplot(df_DBLP)
+    plt.show()
 
 
 def remove_html_tags(text):
@@ -169,7 +180,7 @@ def preprocessing():
     df_DBLP['title'] = df_DBLP['title'].str.lower()
     df_DBLP['authors'] = df_DBLP['authors'].str.lower()
     df_DBLP['venue'] = df_DBLP['venue'].str.lower()
-    df_DBLP['id'] = df_DBLP['id'].str.lower()
+    # df_DBLP['id'] = df_DBLP['id'].str.lower()
 
     # Replace null values
     df_ACM.replace(np.nan, ' ', inplace=True)
@@ -203,6 +214,9 @@ def preprocessing():
         df_DBLP['venue'][dlb] = remove_stopwords(df_DBLP['venue'][dlb])
         df_DBLP['venue'][dlb] = remove_extra_whitespace_tabs(df_DBLP['venue'][dlb])
 
+    df_DBLP.head()
+    print("Preprocessing DBLP Completed")
+
     for ind in df_ACM.index:
         df_ACM['title'][ind] = remove_html_tags(df_ACM['title'][ind])
         df_ACM['title'][ind] = remove_accented_chars(df_ACM['title'][ind])
@@ -231,5 +245,7 @@ def preprocessing():
         df_ACM['venue'][ind] = remove_stopwords(df_ACM['venue'][ind])
         df_ACM['venue'][ind] = remove_extra_whitespace_tabs(df_ACM['venue'][ind])
 
+    df_ACM.head()
+    print("Preprocessing ACM Completed")
 
-evaluating_dataset()
+    return df_DBLP,df_ACM
